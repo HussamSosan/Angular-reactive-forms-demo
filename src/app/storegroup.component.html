@@ -1,0 +1,74 @@
+<div>
+	<div>
+		<h4>Add storegroup</h4>
+		<form [formGroup]="storgroupForm">
+			<div class="form-group">
+				<label>Storegroup identifier</label>
+				<select class="form-control" formControlName="storegroupIdentifier" >
+          <option value="" disabled>Choose storegroup identifier</option>
+          <option [ngValue]="item.value" *ngFor="let item of storegroupIdentifierList">{{item.label}}</option>
+        </select>
+        	<div *ngIf="storegroupIdentifier.invalid && storegroupIdentifier.touched" class="alert alert-danger">
+					<div *ngIf="storegroupIdentifier.hasError('required')"> required</div>
+				</div>
+			</div>
+      	<div class="form-group" *ngIf="isTradeMarkControlVisible()">
+				<label>Trademark</label>
+				<select class="form-control" formControlName="tradMarkControl" >
+          <option ngValue="undefined">Choose trademark</option>
+          <option ngValue="Trademark A">Trademark A</option>
+        </select>
+        	<div *ngIf="tradMarkControl.invalid && tradMarkControl.touched" class="alert alert-danger">
+					<div *ngIf="tradMarkControl.hasError('required')"> required</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Name</label>
+				<input class="form-control" type="text" formControlName="storegroupNameControl">
+				<div *ngIf="storegroupNameControl.invalid && storegroupNameControl.touched" class="alert alert-danger">
+					<div *ngIf="storegroupNameControl.hasError('required')"> required</div>
+					<div *ngIf="storegroupNameControl.hasError(specialStringValidator.name)">
+						specialStringValidator
+					</div>
+          <div *ngIf="storegroupNameControl.hasError(isValidName.name)">
+						isValidNameValidator
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label >Prices range start from</label>
+				<input class="form-control" type="number" formControlName="priceFromControl">
+				<div *ngIf="priceFromControl.invalid && priceFromControl.touched" class="alert alert-danger">
+					<div *ngIf="priceFromControl.hasError('required')"> required</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label >to</label>
+				<input class="form-control" type="number" formControlName="priceToControl">
+				<div *ngIf="priceToControl.invalid && priceToControl.touched" class="alert alert-danger">
+					<div *ngIf="priceToControl.hasError('required')"> required</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div *ngIf="storgroupForm.hasError(priceRangeValidator.name)" class="alert alert-danger">
+		start price must be smaller than the other price
+	</div>
+	<button (click)="addStoregroup()" class="btn btn-primary">Add storegroup</button>
+</div>
+<div>
+	<h6>Storegroups:</h6>
+	<ul>
+		<li *ngFor="let item of StoreGroups">
+			<span>{{item.Name}}</span>
+			<ul>
+				<li *ngFor="let store of item.Stores">
+					<span>{{store.Name}}</span>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</div>
+<div *ngIf="showNotification" class="alert alert-success">
+	{{notificationText}}
+</div>
